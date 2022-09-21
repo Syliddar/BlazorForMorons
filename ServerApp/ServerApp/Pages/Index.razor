@@ -1,0 +1,61 @@
+﻿@page "/"
+@using ServerApp.Data
+
+@inject IJSRuntime jsRuntime
+
+<PageTitle>Index</PageTitle>
+
+<div class="col-2">
+    <div class="input-group">
+        <h5 class="text-center col-12">Add Profile</h5>
+        <EditForm Model="SelectedSet" class="col-12">
+            <InputText id="TitleTextBox" class="form-control" placeholder="Title Text" @bind-Value=SelectedTitle></InputText>
+
+            <InputRadioGroup Name="InputRadio" @bind-Value=SelectedSet>
+                <InputRadio Name="InputRadio" Value="1" title="Set 2" />
+                Set 1 |
+                <InputRadio Name="InputRadio" Value="2" />
+                Set 2 |
+                <InputRadio Name="InputRadio" Value="3" />
+                Set 3 |
+                <InputRadio Name="InputRadio" Value="4" />
+                Set 4
+            </InputRadioGroup>
+            <br />
+            <button class="btn btn-primary col-12" @onclick=AddProfile>
+                Add Profile
+            </button>
+        </EditForm>
+    </div>
+</div>
+<br />
+@if (Profiles != null)
+{
+    <div class="card-group">
+        @foreach (var item in Profiles)
+        {
+            <RoboHashProfile SetNumber="@item.SetNumber" Title="@item.Title" />
+        }
+    </div>
+}
+
+@code {
+    private List<Profile> Profiles;
+    private int SelectedSet { get; set; }
+    private string SelectedTitle { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Profiles = new List<Profile>();
+        SelectedSet = 1;
+    }
+
+    private async Task AddProfile()
+    {
+        Profiles.Add(new Profile
+            {
+                SetNumber = SelectedSet,
+                Title = SelectedTitle
+            });
+    }
+}

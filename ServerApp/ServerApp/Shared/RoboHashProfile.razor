@@ -1,0 +1,30 @@
+﻿<div class="card text-center col-2">
+    <div class="card-header">@Title 's Avatar</div>
+    <div class="card-body">
+        <img src="@HashUrl()" />
+    </div>
+    <div class="card-footer">
+        <em class="font-weight-light">@HashUrl()</em>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public int? SetNumber { get; set; }
+
+    private string HashUrl()
+    {
+        if (Title != null)
+        {
+            if (SetNumber != null)
+            {
+                return $"https://robohash.org/{Title}?set=set{SetNumber}&size=200x200";
+            }
+            return $"https://robohash.org/{Title}";
+        }
+        return "https://robohash.org/" + Title;
+    }
+}
